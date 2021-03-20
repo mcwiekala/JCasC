@@ -1,0 +1,30 @@
+version: '3.1'
+
+networks:
+  ci-network:
+  
+services:
+  jenkins:
+    container_name: jenkins
+    privileged: true
+    build: ./jenkins
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - ./workspace/jenkins/jenkins_home:/var/jenkins_home
+      - ./workspace/jenkins/jenkins_log:/var/log/jenkins
+      - ./jenkins/casc_configs/:/var/jenkins_home/casc_configs/
+    secrets:
+      - SSH_PRIVATE_KEY
+      - GITHUB_TOKEN
+      
+    networks:
+      - ci-network
+      
+secrets:
+  SSH_PRIVATE_KEY:
+    file: ./config/ssh/id_rsa
+  GITHUB_TOKEN:
+    file: ./config/secrets/github_token
