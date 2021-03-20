@@ -3,6 +3,7 @@ version: '3.8'
 services:
   jenkins:
     container_name: jenkins
+    image: ci/jenkins:1.0
     privileged: true
     build: ./jenkins
     restart: unless-stopped
